@@ -36,7 +36,7 @@ for repo_image in json.load(sys.stdin)["imageIds"]:
     pass
 
 all_dated_images = OrderedDict(sorted(images.items(), key=lambda t: t[0]))
-images_to_remove = list(all_dated_images.items())[:-int(options.num_to_keep)]
+images_to_remove = list(all_dated_images.items())[:-int(int(options.num_to_keep) + 1)]
 
 for image_to_remove in images_to_remove:
   image_date, image_sha = image_to_remove
