@@ -3,7 +3,7 @@
 # Remove historical images from AWS ECR if there are more than
 # $OLD_IMAGES_TO_KEEP historical images that exist in the repository.
 set -e
-setenv SCRIPT_DIR $(dirname $0)
+SCRIPT_DIR=$(dirname $0)
 
 if [[ $DEPLOY_BRANCHES =~ (^|,)"$TRAVIS_BRANCH"(,|$) ]]; then
   AMAZON_ECR_URI="${AWS_ACCOUNT_ID}.dkr.ecr.$AMAZON_ECR_REGION.amazonaws.com"
