@@ -4,5 +4,4 @@
 set -e
 
 docker-compose build
-docker images --all
 docker-compose up -d

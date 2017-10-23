@@ -5,6 +5,8 @@ set -e
 
 if [[ $DEPLOY_BRANCHES =~ (^|,)"$TRAVIS_BRANCH"(,|$) ]]; then
   AMAZON_ECR_URI="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com"
+  SERVICE_NAME_SLUG=${SERVICE_NAME//./}
+  CACHE_IMAGE="${SERVICE_NAME_SLUG}_${SERVICE_NAME}"
 
   # Set tagStatus
   BUILD_DATE=$(date '+%Y%m%d%H%M')
@@ -15,7 +17,7 @@ if [[ $DEPLOY_BRANCHES =~ (^|,)"$TRAVIS_BRANCH"(,|$) ]]; then
 
   # Build the image and push it to the EC2 registry.
   echo "Building Image For $IMAGE_TAG..."
-  docker build --cache-from $SERVICE_NAME:latest -t ${SERVICE_NAME}:${IMAGE_TAG} .
+  docker build --cache-from ${CACHE_IMAGE} -t ${SERVICE_NAME}:${IMAGE_TAG} .
 
   echo "Applying Tag and Pushing $IMAGE_TAG to ECR..."
   docker tag ${SERVICE_NAME}:${IMAGE_TAG} ${AMAZON_ECR_URI}/${SERVICE_NAME}:${IMAGE_TAG}
@@ -23,7 +25,7 @@ if [[ $DEPLOY_BRANCHES =~ (^|,)"$TRAVIS_BRANCH"(,|$) ]]; then
 
   # Also Tag default branch.
   echo "Building Image For $TRAVIS_BRANCH..."
-  docker build --cache-from $SERVICE_NAME:latest -t ${SERVICE_NAME}:${TRAVIS_BRANCH} .
+  docker build --cache-from ${CACHE_IMAGE} -t ${SERVICE_NAME}:${TRAVIS_BRANCH} .
 
   echo "Applying Tag and Pushing $TRAVIS_BRANCH to ECR..."
   docker tag ${SERVICE_NAME}:${TRAVIS_BRANCH} ${AMAZON_ECR_URI}/${SERVICE_NAME}:${TRAVIS_BRANCH}
