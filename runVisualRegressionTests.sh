@@ -5,7 +5,7 @@ if [ -f ./tests/backstop/backstop.json ]; then
   echo "Running Regression Tests in /tests/backstop..."
 
   echo "Pulling Upstream Image"
-  git pull docksal/backstopjs
+  docker pull docksal/backstopjs
 
   echo "Running Tests"
   docker run --rm -v $(pwd)/tests/backstop:/src docksal/backstopjs test
