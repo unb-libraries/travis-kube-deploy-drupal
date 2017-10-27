@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-if [ -f ./tests/backstop/backstop.json ]; then
+if [ -f ./tests/backstop/$BRANCH/backstop.json ]; then
   echo "Running Regression Tests in /tests/backstop..."
 
   echo "Pulling Upstream Image"
