@@ -2,7 +2,7 @@
 set -e
 
 if [ -f ./tests/backstop/$BRANCH/backstop.json ]; then
-  echo "Running Regression Tests in /tests/backstop..."
+  echo "Running Regression Tests in /tests/backstop/$BRANCH/..."
 
   echo "Pulling Upstream Image"
   docker pull docksal/backstopjs
