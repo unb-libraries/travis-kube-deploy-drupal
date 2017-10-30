@@ -8,7 +8,7 @@ echo $STARTUP_LOG
 
 # If error strings found in startup, exit.
 LOWER_STARTUP_LOG=${STARTUP_LOG,,}
-if [[ $LOWER_STARTUP_LOG == *"[error]"* ]]; then
+if [[ $LOWER_STARTUP_LOG == *"error"* ]]; then
   echo "Error found in container startup, probably during config import."
   exit 1
 fi
