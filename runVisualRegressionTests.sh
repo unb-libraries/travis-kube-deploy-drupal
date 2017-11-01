@@ -2,6 +2,9 @@
 set -e
 
 if [ -f ./tests/backstop/$BRANCH/backstop.json ]; then
+  echo "Waiting for a minute to let the chaos subside..."
+  sleep 60
+
   echo "Running Regression Tests in /tests/backstop/$BRANCH/..."
 
   echo "Pulling Upstream Image"
