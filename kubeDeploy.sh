@@ -17,7 +17,7 @@ kubectl set image --record deployment/${KUBE_DEPLOYMENT_NAME} ${KUBE_DEPLOYMENT_
 echo "Sleeping for ${SLEEP_SECONDS}s to allow pod to come up..."
 sleep $SLEEP_SECONDS
 
-POD_NAME=$(kubectl get pods --namespace=$BRANCH --sort-by=.status.startTime -l tier=$KUBE_DEPLOYMENT_NAME | grep Running | tac | awk '{ print $1 }' | head -n 1)
+POD_NAME=$(kubectl get pods --namespace=$BRANCH --sort-by=.status.startTime -l tier=$KUBE_DEPLOYMENT_NAME --no-headers | tac | awk '{ print $1 }' | head -n 1)
 
 # Logs.
 echo "Pod logs:"
