@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+DEPLOYMENT_FINISHED_MARKER='99_report_as_complete'
+ADDITIONAL_SLEEP_SECONDS='15'
+
 # Update image on Kubernetes. Trigger from Jenkins job with two arguments:
 echo "BRANCH $BRANCH"
 echo "IMAGE_TAG $IMAGE_TAG"
@@ -18,12 +21,28 @@ echo "Sleeping for ${SLEEP_SECONDS}s to allow pod to come up..."
 sleep $SLEEP_SECONDS
 
 POD_NAME=$(kubectl get pods --namespace=$BRANCH --sort-by=.status.startTime -l tier=$KUBE_DEPLOYMENT_NAME --no-headers | tac | awk '{ print $1 }' | head -n 1)
+POD_DEPLOYED='FALSE'
 
 # Logs.
-echo "Pod logs:"
 POD_LOGS=$(kubectl logs $POD_NAME --namespace=$BRANCH)
-echo "$POD_LOGS"
+echo "Checking to see if deployment complete.."
+if [[ $POD_LOGS == *"$DEPLOYMENT_FINISHED_MARKER"* ]]; then
+  POD_DEPLOYED='TRUE'
+  echo "Yes!"
+fi
 
+while [[ "$POD_DEPLOYED" -eq "FALSE" ]]; do
+  echo "Checking to see if deployment complete.."
+  POD_LOGS=$(kubectl logs $POD_NAME --namespace=$BRANCH)
+  if [[ $POD_LOGS == *"$DEPLOYMENT_FINISHED_MARKER"* ]]; then
+    POD_DEPLOYED='TRUE'
+    echo "Yes!"
+  fi
+  echo "Sleeping $ADDITIONAL_SLEEP_SECONDS more seconds to allow pod to complete deployment..."
+  sleep $ADDITIONAL_SLEEP_SECONDS
+done
+
+echo "Pod logs:"
 # If error strings found in startup, exit.
 LOWER_POD_LOGS=${POD_LOGS,,}
 if [[ $LOWER_POD_LOGS == *"error"* ]]; then
