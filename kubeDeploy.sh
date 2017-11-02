@@ -25,10 +25,9 @@ POD_DEPLOYED='FALSE'
 
 # Logs.
 POD_LOGS=$(kubectl logs $POD_NAME --namespace=$BRANCH)
-echo "Checking to see if deployment complete.."
+
 if [[ $POD_LOGS == *"$DEPLOYMENT_FINISHED_MARKER"* ]]; then
   POD_DEPLOYED='TRUE'
-  echo "Yes!"
 fi
 
 while [[ "$POD_DEPLOYED" -eq "FALSE" ]]; do
