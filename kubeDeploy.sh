@@ -42,6 +42,8 @@ while [[ "$POD_DEPLOYED" == "FALSE" ]]; do
 done
 
 echo "Pod logs:"
+echo "$POD_LOGS"
+
 # If error strings found in startup, exit.
 LOWER_POD_LOGS=${POD_LOGS,,}
 if [[ $LOWER_POD_LOGS == *"error"* ]]; then
