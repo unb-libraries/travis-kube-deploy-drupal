@@ -14,8 +14,9 @@ SLEEP_SECONDS=$(kubectl get deployment $KUBE_DEPLOYMENT_NAME -o json --namespace
 
 # Update image hash to tag.
 echo "Updating image for $SERVICE_NAME - $BRANCH to $IMAGE_TAG in Kubernetes..."
-kubectl set image --record deployment/${KUBE_DEPLOYMENT_NAME} ${KUBE_DEPLOYMENT_NAME}=$AMAZON_ECR_URI/$SERVICE_NAME:$IMAGE_TAG --namespace=${BRANCH}
 echo "kubectl set image --record deployment/${KUBE_DEPLOYMENT_NAME} ${KUBE_DEPLOYMENT_NAME}=$AMAZON_ECR_URI/$SERVICE_NAME:$IMAGE_TAG --namespace=${BRANCH}"
+
+kubectl set image --record deployment/${KUBE_DEPLOYMENT_NAME} ${KUBE_DEPLOYMENT_NAME}=$AMAZON_ECR_URI/$SERVICE_NAME:$IMAGE_TAG --namespace=${BRANCH}
 
 # Sleep, then dump logs.
 echo "Sleeping for ${SLEEP_SECONDS}s to allow pod to come up..."
