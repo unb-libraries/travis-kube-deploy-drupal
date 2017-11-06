@@ -10,7 +10,7 @@ echo "IMAGE_TAG $IMAGE_TAG"
 
 # Determine time to pause before dumping logs to Jenkins build output.
 KUBE_DEPLOYMENT_NAME=$(echo $SERVICE_NAME | sed 's/\./-/g')
-SLEEP_SECONDS=$(kubectl get deployment $KUBE_DEPLOYMENT_NAME -o json --namespace=dev | grep minReadySeconds | awk {'print $2'} | sed 's|,||g')
+SLEEP_SECONDS=$(kubectl get deployment $KUBE_DEPLOYMENT_NAME -o json --namespace=$BRANCH | grep minReadySeconds | awk {'print $2'} | sed 's|,||g')
 
 # Update image hash to tag.
 echo "Updating image for $SERVICE_NAME - $BRANCH to $IMAGE_TAG in Kubernetes..."
