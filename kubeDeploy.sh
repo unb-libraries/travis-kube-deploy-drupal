@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-DEPLOYMENT_FINISHED_MARKER='99_report_as_complete'
 ADDITIONAL_SLEEP_SECONDS='15'
 
 # Update image on Kubernetes. Trigger from Jenkins job with two arguments:
